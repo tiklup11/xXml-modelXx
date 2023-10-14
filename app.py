@@ -8,7 +8,6 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google.cloud import storage
 import os
-from matplotlib import pyplot as plt
 import random
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -28,7 +27,6 @@ def related_images(tag):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    # blobs = bucket.blob(data_dir)
     folder_path = folder_path.rstrip('/')
     blobs = [blob for blob in bucket.list_blobs(prefix=folder_path)]
     random_image = random.sample(blobs, 6)
