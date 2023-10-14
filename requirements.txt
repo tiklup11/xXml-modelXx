@@ -32,7 +32,6 @@ itsdangerous==2.1.2
 # jaraco.classes==3.3.0
 # Jinja2==3.1.2
 jsonschema==4.17.3
-keras==2.14.0
 # keyring==24.2.0
 # libclang==16.0.6
 # Markdown==3.5
