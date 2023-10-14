@@ -3,10 +3,6 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import cv2
-from datetime import timedelta
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from google.cloud import storage
 import os
 import random
 
@@ -93,4 +89,4 @@ def root():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

@@ -66,8 +66,6 @@ opencv-python==4.8.1.78
 # tensorboard==2.14.1
 # tensorboard-data-server==0.7.1
 tensorflow
-google-api-python-client
-google-cloud-storage
 # googleapiclient
 # tensorflow-estimator==2.14.0
 # tensorflow-io-gcs-filesystem==0.34.0
