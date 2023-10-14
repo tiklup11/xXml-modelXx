@@ -16,27 +16,19 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 app = Flask(__name__)
 
 # Load your pre-trained model
-model = tf.keras.models.load_model('bricks_cement_clay_rebars_model2.h5')
+model = tf.keras.models.load_model('your_model.h5')
 
 
 def related_images(tag):
-    project_id = '1005877335369'
-    bucket_name = 'crazynerds.appspot.com'
-    folder_path = 'imhax_model/tiles' + '/' + tag
-    credentials_file = 'crazynerds-755511d743eb.json'
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
-    storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket_name)
-    folder_path = folder_path.rstrip('/')
-    blobs = [blob for blob in bucket.list_blobs(prefix=folder_path)]
-    random_image = random.sample(blobs, 6)
-    return [item.generate_signed_url(version='v4', expiration=timedelta(minutes=15), method='GET') for item in random_image]
+    folder_path = os.path.join('tiles',tag)
+    result = [os.path.join('tiles',tag,item) for item in os.listdir(folder_path)]
+    return random.sample(result, 6)
 
 
 def preprocess_image(image_path):
     img = Image.open(image_path)
     img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    resize = tf.image.resize(img, (256, 256))
+    resize = tf.image.resize(img, (128, 128))
     img = resize / 255.0  # Remove np.expand_dims
     return img
 
@@ -61,6 +53,7 @@ def predict():
         # print(predictions)
 
         resp = related_images(avail_labels[maxi])
+        # print(resp, 'sameer')
         # Return the predictions as JSON
         response = {'data': resp}
         print(jsonify(response))
