@@ -8,6 +8,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google.cloud import storage
 import os
+from matplotlib import pyplot as plt
 import random
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -17,7 +18,6 @@ app = Flask(__name__)
 
 # Load your pre-trained model
 model = tf.keras.models.load_model('bricks_cement_clay_rebars_model2.h5')
-
 
 
 def related_images(tag):
