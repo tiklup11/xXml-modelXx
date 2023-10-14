@@ -3,18 +3,36 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import cv2
+from datetime import timedelta
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from google.cloud import storage
+import json
+import os
+import webbrowser
+import random
 
 app = Flask(__name__)
 
 # Load your pre-trained model
 model = tf.keras.models.load_model('bricks_cement_clay_rebars_model2.h5')
 
-# def preprocess_image(image_path):
-#     img = Image.open(image_path)
-#     img = cv2.cvtColor(np.array(img),cv2.COLOR_RGB2BGR)
-#     resize = tf.image.resize(img, (256,256))
-#     img = np.expand_dims(resize/255, 0)
-#     return img
+
+
+def related_images(tag):
+    project_id = '1005877335369'
+    bucket_name = 'crazynerds.appspot.com'
+    folder_path = 'imhax_model/tiles' + '/' + tag
+    credentials_file = 'crazynerds-755511d743eb.json'
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    # blobs = bucket.blob(data_dir)
+    folder_path = folder_path.rstrip('/')
+    blobs = [blob for blob in bucket.list_blobs(prefix=folder_path)]
+    random_image = random.sample(blobs, 6)
+    return [item.generate_signed_url(version='v4', expiration=timedelta(minutes=15), method='GET') for item in random_image]
+
 
 def preprocess_image(image_path):
     img = Image.open(image_path)
@@ -40,11 +58,12 @@ def predict():
 
         maxi = np.argmax(predictions)
 
-        avail_labels = ['cement_bricks', 'ceremic_basin', 'clay_bricks', 'rebars', 'tiles']
-        print(predictions)
+        avail_labels = ['tiles', 'fans', 'light_bulb']
+        # print(predictions)
 
+        resp = related_images(avail_labels[maxi])
         # Return the predictions as JSON
-        response = {'predictions': avail_labels[maxi]}
+        response = {'data': resp}
         print(jsonify(response))
         return jsonify(response)
     except Exception as e:
