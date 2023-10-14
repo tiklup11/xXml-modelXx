@@ -7,9 +7,7 @@ from datetime import timedelta
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google.cloud import storage
-import json
 import os
-import webbrowser
 import random
 
 app = Flask(__name__)
