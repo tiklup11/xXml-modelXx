@@ -10,6 +10,9 @@ from google.cloud import storage
 import os
 import random
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
 app = Flask(__name__)
 
 # Load your pre-trained model
